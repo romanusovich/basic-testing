@@ -14,11 +14,11 @@ describe('generateLinkedList', () => {
             next: null,
             value: null,
           },
-          value: values[2],
+          value: 3,
         },
-        value: values[1],
+        value: 2,
       },
-      value: values[0],
+      value: 1,
     });
   });
 
