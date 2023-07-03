@@ -30,12 +30,14 @@ describe('throttledGetDataFromApi', () => {
   });
 
   test('should return response data', async () => {
+    const data = 'data';
+    jest.spyOn(axios.Axios.prototype, 'get').mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolve({ data });
+        }),
+    );
     const result = await throttledGetDataFromApi(relativePath);
-    expect(result).toStrictEqual({
-      userId: 1,
-      id: 1,
-      title: 'delectus aut autem',
-      completed: false,
-    });
+    expect(result).toBe(data);
   });
 });
