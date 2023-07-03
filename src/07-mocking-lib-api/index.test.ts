@@ -14,6 +14,16 @@ jest.mock('lodash', () => {
 
 describe('throttledGetDataFromApi', () => {
   const relativePath = 'todos/1';
+  const data = 'data';
+
+  beforeEach(() => {
+    jest.spyOn(axios.Axios.prototype, 'get').mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolve({ data });
+        }),
+    );
+  });
 
   test('should create instance with provided base url', async () => {
     const axiosCreateSpy = jest.spyOn(axios, 'create');
@@ -30,13 +40,6 @@ describe('throttledGetDataFromApi', () => {
   });
 
   test('should return response data', async () => {
-    const data = 'data';
-    jest.spyOn(axios.Axios.prototype, 'get').mockImplementation(
-      () =>
-        new Promise((resolve) => {
-          resolve({ data });
-        }),
-    );
     const result = await throttledGetDataFromApi(relativePath);
     expect(result).toBe(data);
   });
