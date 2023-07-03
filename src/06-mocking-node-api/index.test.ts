@@ -11,9 +11,12 @@ describe('doStuffByTimeout', () => {
   const callback = jest.fn();
   const timeout = 150;
 
+  afterEach(() => {
+    jest.clearAllTimers();
+  });
+
   beforeAll(() => {
     jest.useFakeTimers();
-    // jest.spyOn(global, 'setTimeout'); // just doesnt work
   });
 
   afterAll(() => {
@@ -21,11 +24,9 @@ describe('doStuffByTimeout', () => {
   });
 
   test('should set timeout with provided callback and timeout', () => {
-    // expect(setTimeout).toHaveBeenLastCalledWith(callback, timeout); // just doesnt work
+    const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
     doStuffByTimeout(callback, timeout);
-    expect(callback).not.toBeCalled();
-    jest.advanceTimersByTime(timeout);
-    expect(callback).toBeCalledTimes(1);
+    expect(setTimeoutSpy).toBeCalledWith(callback, timeout);
   });
 
   test('should call callback only after timeout', () => {
@@ -40,22 +41,26 @@ describe('doStuffByInterval', () => {
   let callback: any;
   const timeout = 150;
 
-  beforeEach(() => {
-    jest.useFakeTimers();
-    callback = jest.fn();
-    // jest.spyOn(global, 'setInterval'); // just doesnt work
+  afterEach(() => {
+    jest.clearAllTimers();
   });
 
+  beforeEach(() => {
+    callback = jest.fn();
+  });
+
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+  
   afterAll(() => {
     jest.useRealTimers();
   });
 
   test('should set interval with provided callback and timeout', () => {
-    // expect(setInterval).toHaveBeenLastCalledWith(callback, timeout); // just doesnt work
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
     doStuffByInterval(callback, timeout);
-    expect(callback).not.toBeCalled();
-    jest.advanceTimersByTime(timeout);
-    expect(callback).toBeCalledTimes(1);
+    expect(setIntervalSpy).toBeCalledWith(callback, timeout);
   });
 
   test('should call callback multiple times after multiple intervals', () => {
@@ -74,7 +79,7 @@ describe('readFileAsynchronously', () => {
   jest.spyOn(path, 'join');
   const existSpy = jest.spyOn(fs, 'existsSync');
   const readFileSpy = jest.spyOn(fsp, 'readFile');
-  const filePath = 'index.ts';
+  const filePath = 'asd.ts';
   const text = 'some text';
 
   test('should call join with pathToFile', async () => {
@@ -90,9 +95,8 @@ describe('readFileAsynchronously', () => {
 
   test('should return file content if file exists', async () => {
     existSpy.mockReturnValueOnce(true);
-    readFileSpy.mockReturnValueOnce(new Promise<string | Buffer>((resolve, reject) => {
+    readFileSpy.mockReturnValueOnce(new Promise<string | Buffer>((resolve) => {
       resolve(text);
-      reject(text);
     }));
     const result = await readFileAsynchronously(filePath);
     expect(result).toBe(text);
