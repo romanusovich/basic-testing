@@ -34,8 +34,8 @@ describe('throttledGetDataFromApi', () => {
     expect(result).toStrictEqual({
       userId: 1,
       id: 1,
-      title: "delectus aut autem",
-      completed: false
+      title: 'delectus aut autem',
+      completed: false,
     });
   });
 });

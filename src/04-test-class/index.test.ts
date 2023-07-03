@@ -1,5 +1,11 @@
 // Uncomment the code below and write your tests
-import { getBankAccount, BankAccount, InsufficientFundsError, TransferFailedError, SynchronizationFailedError } from '.';
+import {
+  getBankAccount,
+  BankAccount,
+  InsufficientFundsError,
+  TransferFailedError,
+  SynchronizationFailedError,
+} from '.';
 
 import * as lodash from 'lodash';
 jest.mock('lodash');
@@ -9,7 +15,7 @@ describe('BankAccount', () => {
   let bankAcc: BankAccount;
   let anotherBankAcc: BankAccount;
   let fetchBalance: number;
-  let spyLodashRandom = jest.spyOn(lodash, 'random');
+  const spyLodashRandom = jest.spyOn(lodash, 'random');
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -28,15 +34,21 @@ describe('BankAccount', () => {
   });
 
   test('should throw InsufficientFundsError error when withdrawing more than balance', () => {
-    expect(() => { bankAcc.withdraw(balance ** 2) }).toThrow(InsufficientFundsError);
+    expect(() => {
+      bankAcc.withdraw(balance ** 2);
+    }).toThrow(InsufficientFundsError);
   });
 
   test('should throw error when transferring more than balance', () => {
-    expect(() => { bankAcc.transfer(balance ** 2, anotherBankAcc) }).toThrow(InsufficientFundsError);
+    expect(() => {
+      bankAcc.transfer(balance ** 2, anotherBankAcc);
+    }).toThrow(InsufficientFundsError);
   });
 
   test('should throw error when transferring to the same account', () => {
-    expect(() => { bankAcc.transfer(balance, bankAcc) }).toThrow(TransferFailedError);
+    expect(() => {
+      bankAcc.transfer(balance, bankAcc);
+    }).toThrow(TransferFailedError);
   });
 
   test('should deposit money', () => {
@@ -57,7 +69,7 @@ describe('BankAccount', () => {
 
   test('fetchBalance should return number in case if request did not failed', async () => {
     spyLodashRandom.mockReturnValueOnce(1);
-    const result = await bankAcc.fetchBalance()
+    const result = await bankAcc.fetchBalance();
     expect(result).toBe(fetchBalance);
   });
 

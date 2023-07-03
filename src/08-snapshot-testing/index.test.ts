@@ -8,17 +8,17 @@ describe('generateLinkedList', () => {
   // Check match by expect(...).toStrictEqual(...)
   test('should generate linked list from values 1', () => {
     expect(ll).toStrictEqual({
-      "next": {
-        "next": {
-          "next": {
-            "next": null,
-            "value": null,
+      next: {
+        next: {
+          next: {
+            next: null,
+            value: null,
           },
-          "value": values[2],
+          value: values[2],
         },
-        "value": values[1],
+        value: values[1],
       },
-      "value": values[0],
+      value: values[0],
     });
   });
 

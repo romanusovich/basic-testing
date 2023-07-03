@@ -38,7 +38,7 @@ describe('doStuffByTimeout', () => {
 });
 
 describe('doStuffByInterval', () => {
-  let callback: any;
+  let callback: jest.Mock;
   const timeout = 150;
 
   afterEach(() => {
@@ -52,7 +52,7 @@ describe('doStuffByInterval', () => {
   beforeAll(() => {
     jest.useFakeTimers();
   });
-  
+
   afterAll(() => {
     jest.useRealTimers();
   });
@@ -95,9 +95,11 @@ describe('readFileAsynchronously', () => {
 
   test('should return file content if file exists', async () => {
     existSpy.mockReturnValueOnce(true);
-    readFileSpy.mockReturnValueOnce(new Promise<string | Buffer>((resolve) => {
-      resolve(text);
-    }));
+    readFileSpy.mockReturnValueOnce(
+      new Promise<string | Buffer>((resolve) => {
+        resolve(text);
+      }),
+    );
     const result = await readFileAsynchronously(filePath);
     expect(result).toBe(text);
   });
